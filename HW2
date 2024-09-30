@@ -1,0 +1,35 @@
+# Monte Hall Simulation Code
+
+import numpy as np
+all_door_options = (1,2,3)  # tuple
+my_door_choice = 1  # 1,2,3
+i_won = 0
+reps = 100000
+for i in range(reps):
+    secret_winning_door = np.random.choice(all_door_options)
+    all_door_options_list = list(all_door_options)
+    # take the secret_winning_door, so we don't show it as a "goat" losing door
+    all_door_options_list.remove(secret_winning_door)
+    try:
+        # if my_door_choice was secret_winning_door then it's already removed
+        all_door_options_list.remove(my_door_choice)
+    except:
+        pass
+    # show a "goat" losing door and remove it
+    goat_door_reveal = np.random.choice(all_door_options_list)
+    all_door_options_list.remove(goat_door_reveal)
+
+    # put the secret_winning_door back in if it wasn't our choice
+    # we previously removed it, so it would be shown as a  "goat" losing door
+    if secret_winning_door != my_door_choice:
+        all_door_options_list.append(secret_winning_door)
+    # if secret_winning_door was our choice then all that's left in the list is a "goat" losing door
+    # if secret_winning_door wasn't our choice then it's all that will be left in the list
+
+    # swap strategy
+    my_door_choice = all_door_options_list[0]
+
+    if my_door_choice == secret_winning_door:
+        i_won += 1
+
+i_won/reps
